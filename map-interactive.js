@@ -1,4 +1,14 @@
+/*
+  Compact Map click-through, used only on compact-map.html (second-draft
+  SVG map). Real per-state status/color already set in the SVG's own
+  data-status attribute (member / accepting / none) and fill; this just
+  makes the "member" and "accepting" states clickable/keyboard-operable,
+  jumping to that state's real row on before-you-apply.html (which has
+  matching id="state-XX" anchors) instead of a hover popup.
 
+  Companion to the highlight-on-arrival script inline at the bottom of
+  before-you-apply.html.
+*/
 (function () {
   var svg = document.querySelector('.us-map');
   if (!svg) return;

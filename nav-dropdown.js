@@ -1,4 +1,22 @@
+/*
+  Shared "Compact Commission" nav dropdown, used on every page.
 
+  Click-to-toggle, same hidden-attribute pattern as the header search
+  toggle (header-search.js) and the Tool Kit tabs — not hover-based, so
+  it behaves the same on touch and with a keyboard. Closes when you
+  click elsewhere or press Escape.
+
+  Per Deb's feedback: on the mobile hamburger panel, opening this used
+  to expand the submenu DOWNWARD as an inline accordion, pushing
+  "Contact Us" (and the rest of the panel) further down and requiring
+  extra scrolling to see all 5 subsections. It now swaps in place
+  instead — opening the submenu adds .submenu-open to the panel, which
+  the CSS uses to hide the other top-level items and show the submenu
+  (plus a "Back to menu" row) filling the same space, rather than
+  growing the panel. Desktop's floating dropdown (>=1100px) is
+  unaffected — see the @media(min-width:1100px) block in style.css,
+  which overrides .submenu-open back to normal.
+*/
 (function () {
   var triggers = document.querySelectorAll('.nav-dropdown-trigger');
 

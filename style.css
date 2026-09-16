@@ -1,21 +1,35 @@
-/* OT Compact */
+/*
+  OT Compact — current-site approximation
+  ----------------------------------------
+  Colors and type pulled from the live otcompact.gov page source.
+  This file is your sandbox: everything below reflects roughly how
+  the site looks TODAY. Change values here and hit save — Live
+  Server will refresh the browser automatically so you can see the
+  effect immediately. Nothing here touches the real site.
+*/
 
 :root {
-  --navy: #123869;
-  --teal: #06B7C4;
-  --blue: #0B6DB6;
-  --light-cyan: #A6E5ED;
-  --pale-bg: #F4F8FD;
-  --orange: #FF6900;
+  --navy: #123869;       /* headings, nav links, all link text, footer text */
+  --teal: #06B7C4;       /* "Status of the OTC" heading, CTA highlights */
+  --blue: #0B6DB6;       /* small accents only now (icon-link icons, the
+                             Page/PDF badge text, .btn-meeting text) —
+                             primary buttons use --hospital-green below */
+  --light-cyan: #A6E5ED; /* "read more" backgrounds, info-alert background */
+  --pale-bg: #F4F8FD;    /* footer background band */
+  --orange: #FF6900;     /* WordPress-default highlighted callout */
   --body-text: #33404D;
-  --hospital-blue: #005FA3;
-  --hospital-green: #00A652;
-  --hospital-green-dark: #007A3D;
+  --hospital-blue: #005FA3; /* sampled directly from the DOT hospital-sign
+                                image Deb sent (RGB 0,95,163) — now the
+                                page backdrop, see body/main rules below */
+  --hospital-green: #00A652;      /* sampled from the green Hospital sign
+                                      Deb sent (RGB 0,166,82) — page-title
+                                      color and button fill, replacing the
+                                      tangerine title / blue buttons */
+  --hospital-green-dark: #007A3D; /* darker shade of the above, for button
+                                      hover states */
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -25,41 +39,69 @@ body {
   color: var(--body-text);
   background: var(--hospital-blue);
 }
+/* Compact Map is the one exception: the real Datawrapper choropleth
+   is styled for a white/light page, and its own colors (state fills,
+   legend) clashed sitting on the hospital blue. body.page-white-canvas
+   (added on compact-map.html only) keeps that one page's backdrop
+   white so the map reads the way it's actually designed to. */
+body.page-white-canvas { background: #FFFFFF; }
 
-body.page-white-canvas {
-  background: #FFFFFF;
-}
+/* Page backdrop
+   -----------------------------------
+   Deb's feedback, round 1: the page background read as bland/vanilla
+   white. body now uses --hospital-blue (sampled from the DOT hospital
+   sign she shared) as the page backdrop on every page — header/search
+   bar and footer are unchanged and still sit flush against it.
 
+   Round 2: a single blanket white box behind <main> looked like an
+   oversized rectangle with empty space around narrower content. Tried
+   crop-to-content-width cards instead.
 
+   Round 3 (current): per EMS Compact's real site, Deb wants content
+   sitting directly on the blue, no box at all — like theemscompact.org.
+   So .article-body / .article-body-wide / the Home sections carry NO
+   background of their own anymore. Their bare heading/paragraph/list
+   text (the stuff that used to rely on the box behind it for contrast)
+   gets an explicit light color instead, scoped with ">" child-combinator
+   rules wherever needed so it never touches text that's already inside
+   one of the page's own small, legitimate light-background components —
+   .attestation-box, .notice, .term-box, .cta-apply, .about-intro,
+   .reading-card, .faq-item, .meeting-year, form inputs, and .table-wrap
+   (now carries its own white card so table data stays readable — a
+   dense data table recolored to light-on-blue would be unreadable, so
+   it keeps the same "small functional component" treatment as the
+   accordions/forms, same as the real PT/EMS Compact sites do for their
+   own tables/forms). Those all keep their existing dark text untouched.
 
-a {
-  color: var(--navy);
-  text-decoration: none;
-}
+   Round 4: the real Datawrapper map on Compact Map needed to stay on
+   white (see body.page-white-canvas above), and page titles moved from
+   teal to --tangerine (an orange) since teal was reading as one more
+   shade of blue.
 
-a:hover {
-  color: var(--teal);
-}
+   Round 5: --tangerine is gone already — Deb didn't like the orange
+   title and pointed out the CTA buttons (.btn-primary/.btn-secondary)
+   were still solid blue and still clashing. Both now use
+   --hospital-green (sampled from the green Hospital sign she sent),
+   and .byline (the small meta line under a page's h1, e.g. "By ... ·
+   updated ...") is white instead of light-cyan.
 
-h1,
-h2,
-h3,
-h4,
-h5 {
+   Round 8: briefly swapped Compact Map's live Datawrapper embed for a
+   hand-built inline SVG US map — reverted back to the real Datawrapper
+   embed in round 9 (current) per Deb's call (see compact-map.html's
+   own top comment); .map-embed-wrap below is back to its original
+   rule, body.page-white-canvas above is back to just keeping
+   Datawrapper's own styling from clashing with the blue backdrop. */
+
+a { color: var(--navy); text-decoration: none; }
+a:hover { color: var(--teal); }
+
+h1, h2, h3, h4, h5 {
   color: var(--navy);
   font-weight: 700;
   margin: 0 0 16px 0;
 }
-
-h1 {
-  font-size: 2em;
-  color: #FFFFFF;
-}
-
-/* was --hospital-green; Deb decided it looked goofy (2026-09-11) -- white matches the rest of the heading/text hierarchy that already sits directly on the blue backdrop (h3/h5/p/byline were already white) */
-h2 {
-  font-size: 1.5em;
-}
+h1 { font-size: 2em; color: #FFFFFF; } /* was --hospital-green; Deb decided it looked goofy (2026-09-11) -- white matches the rest of the heading/text hierarchy that already sits directly on the blue backdrop (h3/h5/p/byline were already white) */
+h2 { font-size: 1.5em; }
 
 /* Header / nav */
 .site-header {
@@ -69,7 +111,6 @@ h2 {
   top: 0;
   z-index: 40;
 }
-
 .header-inner {
   max-width: 1140px;
   margin: 0 auto;
@@ -81,7 +122,6 @@ h2 {
   gap: 16px;
   position: relative;
 }
-
 .logo {
   font-weight: 800;
   font-size: 20px;
@@ -89,13 +129,17 @@ h2 {
   display: inline-flex;
   align-items: center;
 }
-
 .logo-img {
   display: block;
   height: 34px;
   width: auto;
 }
-
+/* Hybrid nav, restored per Deb's request: below the breakpoint (see
+   the @media block down by .nav-menu-toggle) this stays the icon-only
+   header with .main-nav as a full-width dropdown panel toggled by
+   nav-mobile.js; at/above the breakpoint the media query overrides
+   these to lay .main-nav out as a normal inline horizontal menu and
+   hides the hamburger button instead. */
 .main-nav {
   display: none;
   position: absolute;
@@ -110,19 +154,23 @@ h2 {
   box-shadow: 0 16px 28px rgba(18, 56, 105, 0.14);
   z-index: 30;
 }
-
-.main-nav.is-open {
-  display: flex;
-}
-
-.main-nav>a {
+.main-nav.is-open { display: flex; }
+.main-nav > a {
   padding: 15px 24px;
   border-bottom: 1px solid #E7EDF3;
   font-size: 16px;
   font-weight: 600;
   color: var(--navy);
 }
-
+/* Compact Commission nav dropdown (click-to-toggle, see nav-dropdown.js).
+   On the mobile hamburger panel this used to expand DOWNWARD as an
+   inline accordion, pushing "Contact Us" and the rest of the panel
+   further down and needing extra scrolling to see all 5 subsections —
+   per Deb's feedback, it now SWAPS IN PLACE instead: opening it adds
+   .submenu-open to .main-nav, which hides the other top-level items
+   (below) and lets .nav-dropdown-menu fill that same space, with its
+   own "Back to menu" row at the top. Desktop's floating dropdown
+   (>=1100px) is unaffected — see the override in that media block. */
 .nav-item-dropdown {
   position: relative;
   display: flex;
@@ -130,7 +178,6 @@ h2 {
   align-items: stretch;
   border-bottom: 1px solid #E7EDF3;
 }
-
 .nav-dropdown-trigger {
   background: none;
   border: none;
@@ -145,24 +192,13 @@ h2 {
   font-weight: 600;
   color: var(--navy);
 }
-
-.nav-dropdown-trigger:hover {
-  color: var(--teal);
-}
-
-.nav-dropdown-trigger.active {
-  color: var(--teal);
-}
-
+.nav-dropdown-trigger:hover { color: var(--teal); }
+.nav-dropdown-trigger.active { color: var(--teal); }
 .nav-dropdown-trigger .caret {
   font-size: 10px;
   transition: transform 0.15s ease;
 }
-
-.nav-dropdown-trigger[aria-expanded="true"] .caret {
-  transform: rotate(180deg);
-}
-
+.nav-dropdown-trigger[aria-expanded="true"] .caret { transform: rotate(180deg); }
 .nav-dropdown-menu {
   position: static;
   min-width: 0;
@@ -174,11 +210,7 @@ h2 {
   margin: 0;
   list-style: none;
 }
-
-.nav-dropdown-menu li {
-  margin: 0;
-}
-
+.nav-dropdown-menu li { margin: 0; }
 .nav-dropdown-menu a {
   display: block;
   padding: 15px 24px;
@@ -187,21 +219,9 @@ h2 {
   color: var(--navy);
   border-bottom: 1px solid #E7EDF3;
 }
-
-.nav-dropdown-menu li:last-child a {
-  border-bottom: none;
-}
-
-.nav-dropdown-menu a:hover {
-  background: var(--pale-bg);
-  color: var(--teal);
-}
-
-.nav-dropdown-menu a.active {
-  color: var(--teal);
-  font-weight: 700;
-}
-
+.nav-dropdown-menu li:last-child a { border-bottom: none; }
+.nav-dropdown-menu a:hover { background: var(--pale-bg); color: var(--teal); }
+.nav-dropdown-menu a.active { color: var(--teal); font-weight: 700; }
 .nav-dropdown-back {
   display: flex;
   align-items: center;
@@ -217,23 +237,20 @@ h2 {
   cursor: pointer;
   text-align: left;
 }
-
-.nav-dropdown-back:hover {
-  color: var(--teal);
-}
-
-.main-nav.submenu-open>a,
+.nav-dropdown-back:hover { color: var(--teal); }
+.main-nav.submenu-open > a,
 .main-nav.submenu-open .nav-dropdown-trigger {
   display: none;
 }
 
-
+/* Search icon + hamburger, grouped together on the right of the
+   header next to the logo (matching ptcompact.org's own layout —
+   its mobile header groups these two icons in one flex div too). */
 .header-icons {
   display: flex;
   align-items: center;
   gap: 6px;
 }
-
 .nav-search-toggle {
   background: none;
   border: none;
@@ -244,10 +261,7 @@ h2 {
   align-items: center;
   color: var(--navy);
 }
-
-.nav-search-toggle:hover {
-  color: var(--teal);
-}
+.nav-search-toggle:hover { color: var(--teal); }
 
 .nav-menu-toggle {
   background: none;
@@ -259,17 +273,18 @@ h2 {
   align-items: center;
   color: var(--navy);
 }
+.nav-menu-toggle:hover { color: var(--teal); }
 
-.nav-menu-toggle:hover {
-  color: var(--teal);
-}
-
-
+/* Hybrid breakpoint: wide enough to lay the full nav out horizontally
+   next to the logo, so the hamburger/dropdown panel is only needed on
+   narrower screens. All 8 top-level nav items are long ("Before You
+   Apply", "Practitioner FAQs", "Compact Commission" + caret), so this
+   needs real headroom above the 948px content breakpoint used
+   elsewhere in this sheet — 1100px, checked empirically against the
+   actual rendered nav width so it doesn't wrap or overflow right at
+   the edge. */
 @media (min-width: 1100px) {
-  .nav-menu-toggle {
-    display: none;
-  }
-
+  .nav-menu-toggle { display: none; }
   .main-nav {
     display: flex;
     position: static;
@@ -282,30 +297,23 @@ h2 {
     box-shadow: none;
     z-index: auto;
   }
-
-  .main-nav>a {
+  .main-nav > a {
     padding: 8px 8px;
     border-bottom: none;
     font-size: 14.5px;
     white-space: nowrap;
   }
-
-  .main-nav>a:hover {
-    color: var(--teal);
-  }
-
+  .main-nav > a:hover { color: var(--teal); }
   .nav-item-dropdown {
     flex-direction: row;
     align-items: center;
     border-bottom: none;
   }
-
   .nav-dropdown-trigger {
     padding: 8px 8px;
     font-size: 14.5px;
     white-space: nowrap;
   }
-
   .nav-dropdown-menu {
     position: absolute;
     top: 100%;
@@ -318,32 +326,25 @@ h2 {
     box-shadow: 0 12px 24px rgba(18, 56, 105, 0.16);
     padding: 6px 0;
   }
-
   .nav-dropdown-menu a {
     padding: 10px 16px;
     border-bottom: none;
     font-size: 14px;
   }
-
-  .nav-dropdown-back {
-    display: none;
-  }
-
-  .main-nav.submenu-open>a {
-    display: inline;
-  }
-
-  .main-nav.submenu-open .nav-dropdown-trigger {
-    display: flex;
-  }
+  /* The mobile "swap in place" submenu treatment doesn't apply here —
+     the dropdown is a normal floating menu at this width, so undo the
+     other top-level items being hidden and drop the mobile-only back
+     button, regardless of .submenu-open being set. */
+  .nav-dropdown-back { display: none; }
+  .main-nav.submenu-open > a { display: inline; }
+  .main-nav.submenu-open .nav-dropdown-trigger { display: flex; }
 }
 
-
+/* Site search bar (visual only — see header-search.js comment) */
 .site-search-bar {
   background: #F4F6F8;
   border-bottom: 1px solid #E7EDF3;
 }
-
 .search-bar-inner {
   max-width: 1140px;
   margin: 0 auto;
@@ -351,7 +352,6 @@ h2 {
   display: flex;
   gap: 12px;
 }
-
 .site-search-bar input[type="search"] {
   flex: 1;
   font-family: inherit;
@@ -360,12 +360,10 @@ h2 {
   border: 1px solid #CBD5E0;
   border-radius: 4px;
 }
-
 .site-search-bar input[type="search"]:focus {
   outline: 2px solid var(--teal);
   outline-offset: 1px;
 }
-
 .site-search-bar button[type="submit"] {
   background: none;
   border: none;
@@ -376,11 +374,7 @@ h2 {
   justify-content: center;
   cursor: pointer;
 }
-
-.site-search-bar button[type="submit"]:hover {
-  color: var(--teal);
-}
-
+.site-search-bar button[type="submit"]:hover { color: var(--teal); }
 .site-search-note {
   max-width: 1140px;
   margin: 0 auto;
@@ -389,7 +383,7 @@ h2 {
   color: #718096;
 }
 
-
+/* Shared buttons (used across several pages — keep class names stable) */
 .cta-stack {
   display: flex;
   flex-direction: column;
@@ -397,7 +391,6 @@ h2 {
   gap: 12px;
   margin-top: 24px;
 }
-
 .btn {
   display: inline-block;
   padding: 12px 28px;
@@ -405,16 +398,11 @@ h2 {
   font-weight: 600;
   font-size: 15px;
 }
-
 .btn-primary {
   background: var(--hospital-green);
   color: #FFFFFF;
 }
-
-.btn-primary:hover {
-  background: var(--hospital-green-dark);
-  color: #FFFFFF;
-}
+.btn-primary:hover { background: var(--hospital-green-dark); color: #FFFFFF; }
 
 /* Notice (still used by rulemaking.html) */
 .notice {
@@ -424,10 +412,7 @@ h2 {
   border-left: 4px solid var(--orange);
   background: #FFF6EC;
 }
-
-.notice p {
-  margin: 0;
-}
+.notice p { margin: 0; }
 
 .btn-secondary {
   background: var(--hospital-green);
@@ -437,22 +422,25 @@ h2 {
   font-weight: 600;
   font-size: 14px;
 }
+.btn-secondary:hover { background: var(--hospital-green-dark); color: #FFFFFF; }
 
-.btn-secondary:hover {
-  background: var(--hospital-green-dark);
-  color: #FFFFFF;
-}
-
+/* ==========================================================================
+   Home page — "dynamic" component set
+   Added after seeing ptcompact.org / theemscompact.org real page source:
+   a full-bleed navy hero, icon-accented action cards, a checklist instead
+   of a plain bulleted <ul>, a plain-number stat block, and icon link
+   cards for the secondary links — all built from real OT Compact Home
+   content, no invented copy. See index.html's top comment for specifics.
+   ========================================================================== */
 
 .home-photo-hero {
-  background: #C9D2DB;
-  line-height: 0;
+  background: #C9D2DB; /* fallback if the real hotlinked photo can't load */
+  line-height: 0; /* removes the few px of baseline gap under an inline img */
 }
-
 .home-photo-hero-img {
   display: block;
   width: 100%;
-  height: auto;
+  height: auto; /* natural aspect ratio -- shows the whole photo, never crops it */
 }
 
 .home-hero {
@@ -460,23 +448,19 @@ h2 {
   padding: 56px 24px 64px;
   text-align: center;
 }
-
 .home-hero-inner {
   max-width: 900px;
   margin: 0 auto;
 }
-
 .home-hero h1 {
   color: #FFFFFF;
   margin-bottom: 6px;
 }
-
 .home-hero-byline {
   color: var(--light-cyan);
   font-size: 15px;
   margin-bottom: 36px;
 }
-
 .home-cta-grid {
   display: flex;
   flex-direction: column;
@@ -485,7 +469,6 @@ h2 {
   max-width: 560px;
   margin: 0 auto;
 }
-
 .home-cta-button {
   display: block;
   width: 100%;
@@ -493,15 +476,13 @@ h2 {
   background: #FFFFFF;
   border-radius: 50px;
   padding: 20px 32px;
-  box-shadow: 0 6px 18px rgba(0, 33, 66, 0.22);
+  box-shadow: 0 6px 18px rgba(0,33,66,0.22);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-
 .home-cta-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(0, 33, 66, 0.3);
+  box-shadow: 0 10px 26px rgba(0,33,66,0.3);
 }
-
 .home-cta-button-title {
   font-weight: 800;
   font-size: 17px;
@@ -509,7 +490,6 @@ h2 {
   color: var(--navy);
   line-height: 1.3;
 }
-
 .home-cta-button-sub {
   font-size: 13px;
   font-weight: 400;
@@ -518,65 +498,44 @@ h2 {
   color: #5E7182;
   margin-top: 6px;
 }
-
 .home-cta-button-primary {
   background: var(--hospital-green);
   padding: 26px 32px;
 }
-
 .home-cta-button-primary .home-cta-button-title {
   color: #FFFFFF;
   font-size: 19px;
   text-transform: uppercase;
 }
-
-.home-cta-button-primary .home-cta-button-sub {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.home-cta-button-primary:hover {
-  background: var(--hospital-green-dark);
-}
+.home-cta-button-primary .home-cta-button-sub { color: rgba(255,255,255,0.9); }
+.home-cta-button-primary:hover { background: var(--hospital-green-dark); }
 
 .home-readme {
   max-width: 900px;
   margin: 32px auto;
   padding: 8px 24px;
 }
-
-.home-readme h2 {
-  font-size: 1.15em;
-  color: #FFFFFF;
-}
-
+.home-readme h2 { font-size: 1.15em; color: #FFFFFF; }
 .check-list {
   list-style: none;
   margin: 20px 0 0 0;
   padding: 0;
   color: #FFFFFF;
 }
-
 .check-list li {
   position: relative;
   padding-left: 32px;
   margin-bottom: 14px;
   line-height: 1.5;
 }
-
 .check-list li svg {
   position: absolute;
   left: 0;
   top: 2px;
   color: var(--teal);
 }
-
-.check-list li a {
-  color: var(--light-cyan);
-}
-
-.check-list li a:hover {
-  color: var(--teal);
-}
+.check-list li a { color: var(--light-cyan); }
+.check-list li a:hover { color: var(--teal); }
 
 .stat-strip {
   max-width: 900px;
@@ -585,69 +544,49 @@ h2 {
   display: flex;
   justify-content: center;
 }
-
 .stat-block {
   text-align: center;
   padding: 24px 40px;
   border-radius: 10px;
   background: var(--pale-bg);
 }
-
 .stat-number {
   font-size: 2.75em;
   font-weight: 800;
   color: var(--teal);
   line-height: 1;
 }
-
 .stat-label {
   margin-top: 6px;
   font-weight: 600;
   color: var(--navy);
 }
 
-
+/* Explainer sections (Home page only, see index.html top comment).
+   .explainer (plain) has no background of its own — its text sits
+   directly on the blue page background, so it needs a light color.
+   .explainer-alt is the one deliberate accent band (light-cyan, like
+   the highlighted strips on ptcompact.org/emscompact.gov) — it keeps
+   its existing dark text since its own background is light. */
 .explainer {
   max-width: 900px;
   margin: 24px auto;
   padding: 40px 24px;
 }
-
-.explainer>h2,
-.explainer>h3 {
-  color: #FFFFFF;
-}
-
-.explainer>p {
-  color: #FFFFFF;
-}
-
-.explainer>p a {
-  color: var(--light-cyan);
-}
-
-.explainer>p a:hover {
-  color: var(--teal);
-}
+.explainer > h2, .explainer > h3 { color: #FFFFFF; }
+.explainer > p { color: #FFFFFF; }
+.explainer > p a { color: var(--light-cyan); }
+.explainer > p a:hover { color: var(--teal); }
 
 .explainer-alt {
   background: var(--light-cyan);
   border-radius: 14px;
 }
-
-.explainer-alt h2,
-.explainer-alt h3 {
-  color: var(--navy);
-}
-
-.explainer-alt p {
-  color: var(--body-text);
-}
+.explainer-alt h2, .explainer-alt h3 { color: var(--navy); }
+.explainer-alt p { color: var(--body-text); }
 
 @media (max-width: 948px) {
-
-  .home-readme,
-  .explainer {
+  .home-readme, .explainer {
     margin-left: 16px;
     margin-right: 16px;
   }
@@ -661,13 +600,9 @@ h2 {
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
-
 @media (max-width: 760px) {
-  .icon-link-grid {
-    grid-template-columns: 1fr;
-  }
+  .icon-link-grid { grid-template-columns: 1fr; }
 }
-
 .icon-link-card {
   display: flex;
   flex-direction: column;
@@ -681,67 +616,54 @@ h2 {
   color: var(--navy);
   transition: background 0.15s ease;
 }
-
-.icon-link-card:hover {
-  background: var(--light-cyan);
-  color: var(--navy);
-}
-
-.icon-link-card svg {
-  color: var(--blue);
-}
+.icon-link-card:hover { background: var(--light-cyan); color: var(--navy); }
+.icon-link-card svg { color: var(--blue); }
 
 /* Before You Apply page */
 .main-nav a.active {
   color: var(--teal);
 }
-
 .article-body {
   max-width: 900px;
   margin: 40px auto;
   padding: 48px 24px 64px 24px;
 }
-
 @media (max-width: 948px) {
-  .article-body {
-    margin: 24px 16px;
-  }
+  .article-body { margin: 24px 16px; }
 }
-
-.article-body p,
-.article-body ul {
+.article-body p, .article-body ul {
   margin: 0 0 20px 0;
 }
-
-.article-body>p,
-.article-body>h3,
-.article-body>h5 {
+/* Text that sits directly on the blue page background (no card of its
+   own) needs a light color to stay readable — using the ">" child
+   combinator here so it only catches BARE text one level under
+   .article-body, never text already inside one of the page's own
+   light-background components (.attestation-box, .notice, .term-box,
+   .cta-apply, .about-intro, .table-wrap, .content-card's own rules
+   below, etc.), which keep their existing dark text untouched. */
+.article-body > p,
+.article-body > h3,
+.article-body > h5 {
   color: #FFFFFF;
 }
-
-.article-body>p a,
-.article-body>h5 a {
+.article-body > p a,
+.article-body > h5 a {
   color: var(--light-cyan);
 }
-
-.article-body>p a:hover,
-.article-body>h5 a:hover {
+.article-body > p a:hover,
+.article-body > h5 a:hover {
   color: var(--teal);
 }
-
 .article-header {
   margin-bottom: 24px;
 }
-
 .article-header h1 {
   margin-bottom: 6px;
 }
-
 .byline {
   font-size: 13px;
   color: #FFFFFF;
 }
-
 .attestation-box {
   padding: 20px 24px;
   border-radius: 8px;
@@ -749,20 +671,9 @@ h2 {
   border-left: 4px solid var(--orange);
   margin-bottom: 20px;
 }
-
-.attestation-box p {
-  margin-bottom: 10px;
-}
-
-.attestation-box ul {
-  margin-bottom: 0;
-  padding-left: 20px;
-}
-
-.attestation-box li {
-  margin-bottom: 8px;
-}
-
+.attestation-box p { margin-bottom: 10px; }
+.attestation-box ul { margin-bottom: 0; padding-left: 20px; }
+.attestation-box li { margin-bottom: 8px; }
 .cta-apply {
   text-align: center;
   padding: 32px 24px;
@@ -770,13 +681,20 @@ h2 {
   background: var(--pale-bg);
   margin-bottom: 32px;
 }
-
 .cta-subtext {
   font-size: 13px;
   color: #5E7182;
   margin: 14px 0 0 0;
 }
-
+/* max-height + overflow-y here is what actually makes the header row
+   below sticky work — position:sticky needs its OWN scrolling ancestor
+   to stick against, and without a bounded height this box (despite
+   already having overflow-x:auto, which per the CSS overflow spec
+   forces overflow-y to auto too) never actually scrolls internally,
+   so "sticky" silently did nothing before this. Only kicks in on
+   tables tall enough to exceed 640px — the Before You Apply and State
+   Commissioners tables (Deb's "traverse it better" ask) — the small
+   Committee Information tables stay exactly as they were. */
 .table-wrap {
   overflow-x: auto;
   overflow-y: auto;
@@ -788,13 +706,11 @@ h2 {
   padding: 4px;
   box-shadow: 0 8px 24px rgba(0, 33, 66, 0.25);
 }
-
 .eligibility-table {
   border-collapse: collapse;
   width: 100%;
   font-size: 13.5px;
 }
-
 .eligibility-table th {
   background: var(--navy);
   color: #FFFFFF;
@@ -804,39 +720,30 @@ h2 {
   top: 0;
   z-index: 1;
 }
-
+/* Second-draft addition: arriving here from a Compact Map state click
+   (before-you-apply.html#state-XX, see the page's own inline script)
+   briefly highlights the matching row so it's easy to spot. */
 .eligibility-table tbody tr.row-highlight td {
   background: #FFF3CD;
   transition: background 2.2s ease;
 }
-
 .eligibility-table td {
   padding: 9px 12px;
   border-bottom: 1px solid #E7EDF3;
 }
-
-.eligibility-table tbody tr:nth-child(even) {
-  background: #FAFCFE;
-}
-
-.eligibility-table tbody tr:hover {
-  background: var(--light-cyan);
-}
-
-.eligibility-table .status-open {
-  color: #0E8A4B;
-  font-weight: 700;
-}
-
-.eligibility-table .row-home td:first-child {
-  font-weight: 800;
-}
+.eligibility-table tbody tr:nth-child(even) { background: #FAFCFE; }
+.eligibility-table tbody tr:hover { background: var(--light-cyan); }
+.eligibility-table .status-open { color: #0E8A4B; font-weight: 700; }
+.eligibility-table .row-home td:first-child { font-weight: 800; }
 
 .map-embed-wrap {
   margin-top: 24px;
 }
 
-
+/* Second-draft hand-built SVG map (replaces the Datawrapper iframe on
+   this copy only — see compact-map.html's top comment). Same "give the
+   real data component a white card on the blue backdrop" treatment as
+   .table-wrap uses elsewhere in this sheet. */
 .us-map-wrap {
   margin: 24px auto 0;
   max-width: 1000px;
@@ -845,33 +752,27 @@ h2 {
   padding: 20px 24px 24px;
   box-shadow: 0 8px 24px rgba(0, 33, 66, 0.25);
 }
-
 .us-map {
   display: block;
   width: 100%;
   height: auto;
 }
-
 .us-map path[data-status="none"] {
   cursor: default;
 }
-
 .us-map-clickable {
   cursor: pointer;
   transition: opacity 0.12s ease;
 }
-
 .us-map-clickable:hover,
 .us-map-clickable:focus {
   opacity: 0.72;
   outline: none;
 }
-
 .us-map-clickable:focus-visible {
   outline: 2px solid var(--navy);
   outline-offset: 1px;
 }
-
 .map-legend {
   display: flex;
   flex-wrap: wrap;
@@ -880,7 +781,6 @@ h2 {
   padding-top: 16px;
   border-top: 1px solid #E7EDF3;
 }
-
 .map-legend-item {
   display: inline-flex;
   align-items: center;
@@ -888,39 +788,63 @@ h2 {
   font-size: 14px;
   color: var(--navy);
 }
-
 .map-legend-swatch {
   display: inline-block;
   width: 14px;
   height: 14px;
   border-radius: 3px;
 }
-
-.swatch-accepting {
-  background: var(--teal);
-}
-
-.swatch-member {
-  background: var(--hospital-green);
-}
-
-.swatch-none {
-  background: #CBD5E0;
-}
-
+.swatch-accepting { background: var(--teal); }
+.swatch-member { background: var(--hospital-green); }
+.swatch-none { background: #CBD5E0; }
 .map-legend-note {
   margin: 10px 0 0 0;
   font-size: 13px;
   color: #718096;
 }
+.map-legend-note a { color: var(--navy); text-decoration: underline; }
+.map-legend-note a:hover { color: var(--teal); }
 
-.map-legend-note a {
-  color: var(--navy);
-  text-decoration: underline;
+/* Compact Map -- U.S. Territories panel (added 2026-09-16, mockup) */
+.map-territories {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #E7EDF3;
 }
-
-.map-legend-note a:hover {
-  color: var(--teal);
+.map-territories-label {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.map-territories-note {
+  font-weight: 400;
+  font-size: 13px;
+  color: #718096;
+}
+.territory-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.territory-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+  background: var(--pale-bg);
+  border: 1px solid #E7EDF3;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: default;
+}
+.territory-chip-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
 }
 
 /* About page */
@@ -928,39 +852,34 @@ h2 {
   margin-bottom: 32px;
   color: #FFFFFF;
 }
-
-.about-intro p:last-child {
-  margin-bottom: 0;
-}
+.about-intro p:last-child { margin-bottom: 0; }
 
 .content-card {
   margin-bottom: 40px;
 }
-
 .content-card h2 {
   margin-bottom: 16px;
 }
-
-.content-card>h2,
-.content-card>h3 {
+/* content-card itself has no background — it's a bare grouping div —
+   so its own direct text (not text already inside a nested card like
+   .reading-card or .table-wrap, which keep their existing dark text)
+   needs to go light to read on the blue page background. */
+.content-card > h2,
+.content-card > h3 {
   color: #FFFFFF;
 }
-
-.content-card>p {
+.content-card > p {
   color: #FFFFFF;
 }
-
-.content-card>p a,
-.content-card>ul a {
+.content-card > p a,
+.content-card > ul a {
   color: var(--light-cyan);
 }
-
-.content-card>p a:hover,
-.content-card>ul a:hover {
+.content-card > p a:hover,
+.content-card > ul a:hover {
   color: var(--teal);
 }
-
-.content-card>ul {
+.content-card > ul {
   color: #FFFFFF;
 }
 
@@ -972,7 +891,6 @@ h2 {
   border-radius: 10px;
   background: var(--pale-bg);
 }
-
 .reading-thumb img {
   display: block;
   width: 116px;
@@ -980,50 +898,37 @@ h2 {
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(18, 56, 105, 0.18);
 }
-
 .reading-text h3 {
   margin: 0 0 8px 0;
   font-size: 1.1em;
 }
-
 .reading-text p {
   margin: 0;
   font-size: 15px;
 }
-
 @media (max-width: 480px) {
-  .reading-card {
-    flex-direction: column;
-  }
+  .reading-card { flex-direction: column; }
 }
 
-/* Tool Kit */
+/* Tool Kit page */
 .article-body-wide {
   max-width: 1140px;
 }
-
 @media (max-width: 1188px) {
-  .article-body-wide {
-    margin: 24px 16px;
-  }
+  .article-body-wide { margin: 24px 16px; }
 }
-
 .toolkit-hero {
   margin: -48px -24px 32px -24px;
   overflow: hidden;
 }
-
 .toolkit-hero img {
   display: block;
   width: 100%;
   height: 260px;
   object-fit: cover;
 }
-
 @media (min-width: 700px) {
-  .toolkit-hero img {
-    height: 340px;
-  }
+  .toolkit-hero img { height: 340px; }
 }
 
 .tabbar {
@@ -1033,7 +938,6 @@ h2 {
   margin-bottom: 28px;
   flex-wrap: wrap;
 }
-
 .tab-btn {
   appearance: none;
   border: none;
@@ -1048,11 +952,7 @@ h2 {
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
 }
-
-.tab-btn:hover {
-  opacity: 0.85;
-}
-
+.tab-btn:hover { opacity: 0.85; }
 .tab-btn.active {
   opacity: 1;
   color: var(--teal);
@@ -1064,7 +964,6 @@ h2 {
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 18px;
 }
-
 .resource-card {
   display: block;
   padding: 18px 20px;
@@ -1073,12 +972,10 @@ h2 {
   border: 1px solid #E7EDF3;
   transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
-
 .resource-card:hover {
   box-shadow: 0 4px 14px rgba(18, 56, 105, 0.14);
   transform: translateY(-2px);
 }
-
 .resource-type {
   display: inline-block;
   font-size: 11px;
@@ -1090,45 +987,37 @@ h2 {
   padding: 2px 7px;
   margin-bottom: 10px;
 }
-
 .resource-card h3 {
   font-size: 1em;
   margin: 0 0 8px 0;
   color: var(--navy);
 }
-
 .resource-card p {
   font-size: 14px;
   color: var(--body-text);
   margin: 0;
 }
 
-/* Practitioner FAQs */
+/* Practitioner FAQs page */
 .term-box {
   padding: 16px 20px;
   border-radius: 8px;
   background: var(--light-cyan);
   margin-bottom: 28px;
 }
-
-.term-box p {
-  margin: 0;
-  font-size: 15px;
-}
+.term-box p { margin: 0; font-size: 15px; }
 
 .faq-list-accordion {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-
 .faq-item {
   border: 1px solid #E7EDF3;
   border-radius: 8px;
   background: #FFFFFF;
   padding: 4px 20px;
 }
-
 .faq-item summary {
   cursor: pointer;
   padding: 14px 0;
@@ -1138,11 +1027,7 @@ h2 {
   position: relative;
   padding-right: 28px;
 }
-
-.faq-item summary::-webkit-details-marker {
-  display: none;
-}
-
+.faq-item summary::-webkit-details-marker { display: none; }
 .faq-item summary::after {
   content: "+";
   position: absolute;
@@ -1152,42 +1037,27 @@ h2 {
   font-weight: 400;
   color: var(--teal);
 }
-
 .faq-item[open] summary::after {
   content: "\2212";
 }
-
 .faq-item[open] summary {
   color: var(--teal);
 }
-
 .faq-answer {
   padding: 0 0 18px 0;
 }
-
 .faq-answer p {
   margin: 0 0 12px 0;
   font-size: 15.5px;
 }
+.faq-answer p:last-child { margin-bottom: 0; }
 
-.faq-answer p:last-child {
-  margin-bottom: 0;
-}
+/* Contact Us page */
+.article-body .content-card p { margin: 0 0 16px 0; }
 
-/* Contact Us */
-.article-body .content-card p {
-  margin: 0 0 16px 0;
-}
-
-/* Meetings */
-.meetings-intro {
-  margin-bottom: 24px;
-  color: #FFFFFF;
-}
-
-.meetings-intro strong {
-  color: #FFFFFF;
-}
+/* Meetings page (consolidated) */
+.meetings-intro { margin-bottom: 24px; color: #FFFFFF; }
+.meetings-intro strong { color: #FFFFFF; }
 
 .meetings-list {
   display: flex;
@@ -1201,7 +1071,6 @@ h2 {
   background: #FFFFFF;
   padding: 4px 20px;
 }
-
 .meeting-year summary {
   cursor: pointer;
   padding: 16px 0;
@@ -1212,11 +1081,7 @@ h2 {
   position: relative;
   padding-right: 28px;
 }
-
-.meeting-year summary::-webkit-details-marker {
-  display: none;
-}
-
+.meeting-year summary::-webkit-details-marker { display: none; }
 .meeting-year summary::after {
   content: "+";
   position: absolute;
@@ -1226,25 +1091,11 @@ h2 {
   font-weight: 400;
   color: var(--teal);
 }
+.meeting-year[open] summary::after { content: "\2212"; }
+.meeting-year[open] summary { color: var(--teal); }
+.meeting-count { font-weight: 400; font-size: 14px; color: #718096; }
 
-.meeting-year[open] summary::after {
-  content: "\2212";
-}
-
-.meeting-year[open] summary {
-  color: var(--teal);
-}
-
-.meeting-count {
-  font-weight: 400;
-  font-size: 14px;
-  color: #718096;
-}
-
-.meeting-year-body {
-  padding: 4px 0 20px 0;
-}
-
+.meeting-year-body { padding: 4px 0 20px 0; }
 .meeting-year-note {
   background: var(--pale-bg);
   border-left: 4px solid var(--orange);
@@ -1260,10 +1111,7 @@ h2 {
   padding: 14px 0;
   border-top: 1px solid #EEF2F7;
 }
-
-.meeting-row:first-child {
-  border-top: none;
-}
+.meeting-row:first-child { border-top: none; }
 
 .meeting-date {
   flex: 0 0 150px;
@@ -1273,10 +1121,7 @@ h2 {
   padding-top: 2px;
 }
 
-.meeting-body {
-  flex: 1;
-  min-width: 0;
-}
+.meeting-body { flex: 1; min-width: 0; }
 
 .meeting-title-row {
   display: flex;
@@ -1285,11 +1130,7 @@ h2 {
   gap: 10px;
   margin-bottom: 4px;
 }
-
-.meeting-name {
-  font-weight: 700;
-  color: var(--navy);
-}
+.meeting-name { font-weight: 700; color: var(--navy); }
 
 .abm-badge {
   display: inline-block;
@@ -1312,39 +1153,22 @@ h2 {
   padding: 3px 8px;
   border-radius: 4px;
 }
-
-.status-cancelled {
-  background: #FDEDEC;
-  color: #B3261E;
-}
-
-.status-rescheduled {
-  background: #FFF4E5;
-  color: #9A5B00;
-}
-
-.status-coming-soon {
-  background: var(--light-cyan);
-  color: var(--navy);
-}
+.status-cancelled { background: #FDEDEC; color: #B3261E; }
+.status-rescheduled { background: #FFF4E5; color: #9A5B00; }
+.status-coming-soon { background: var(--light-cyan); color: var(--navy); }
 
 .meeting-location {
   font-size: 14.5px;
   color: var(--body-text);
   margin-bottom: 8px;
 }
-
-.meeting-location em {
-  color: #B3261E;
-  font-style: italic;
-}
+.meeting-location em { color: #B3261E; font-style: italic; }
 
 .meeting-links {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
-
 .btn-meeting {
   display: inline-block;
   background: var(--pale-bg);
@@ -1356,12 +1180,7 @@ h2 {
   font-weight: 600;
   text-decoration: none;
 }
-
-a.btn-meeting:hover {
-  background: var(--light-cyan);
-  color: var(--navy);
-}
-
+a.btn-meeting:hover { background: var(--light-cyan); color: var(--navy); }
 .btn-meeting-plain {
   background: none;
   border: none;
@@ -1369,13 +1188,13 @@ a.btn-meeting:hover {
   font-weight: 400;
   padding: 6px 0;
 }
-
 .btn-meeting-draft {
   border-color: var(--orange);
   color: #9A5B00;
 }
 
-
+/* Annual/Special Business Meetings and founding-meeting rows get a
+   visually distinct treatment per the team's punch-list note. */
 .meeting-row-abm {
   background: var(--pale-bg);
   border-radius: 8px;
@@ -1384,19 +1203,10 @@ a.btn-meeting:hover {
   padding: 14px 16px;
   border-left: 4px solid var(--teal);
 }
+.meeting-row-abm .meeting-date { color: var(--teal); }
 
-.meeting-row-abm .meeting-date {
-  color: var(--teal);
-}
-
-.meeting-row-cancelled {
-  opacity: 0.75;
-}
-
-.meeting-row-cancelled .meeting-name {
-  text-decoration: line-through;
-  text-decoration-color: #B3261E;
-}
+.meeting-row-cancelled { opacity: 0.75; }
+.meeting-row-cancelled .meeting-name { text-decoration: line-through; text-decoration-color: #B3261E; }
 
 .btn-disabled {
   opacity: 0.5;
@@ -1407,28 +1217,21 @@ a.btn-meeting:hover {
   margin-top: 20px;
   max-width: 520px;
 }
-
 .form-row {
   margin-bottom: 18px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-
 .form-row-narrow {
   max-width: 220px;
 }
-
 .form-row label {
   font-weight: 700;
   font-size: 14px;
   color: #FFFFFF;
 }
-
-.req {
-  color: var(--orange);
-}
-
+.req { color: var(--orange); }
 .form-row input,
 .form-row select,
 .form-row textarea {
@@ -1440,14 +1243,12 @@ a.btn-meeting:hover {
   color: var(--body-text);
   background: #FFFFFF;
 }
-
 .form-row input:focus,
 .form-row select:focus,
 .form-row textarea:focus {
   outline: 2px solid var(--teal);
   outline-offset: 1px;
 }
-
 .form-note {
   margin-top: 14px;
   padding: 12px 16px;
@@ -1456,7 +1257,6 @@ a.btn-meeting:hover {
   border-left: 4px solid var(--orange);
   font-size: 14px;
 }
-
 .joint-initiative-note {
   margin-top: 40px;
   padding-top: 24px;
@@ -1465,11 +1265,7 @@ a.btn-meeting:hover {
   font-size: 14px;
   color: var(--light-cyan);
 }
-
-.joint-initiative-note p {
-  margin: 0 0 8px 0;
-}
-
+.joint-initiative-note p { margin: 0 0 8px 0; }
 .joint-logo-img {
   height: 30px;
   width: auto;
@@ -1480,20 +1276,17 @@ a.btn-meeting:hover {
   background: var(--pale-bg);
   margin-top: 48px;
 }
-
 .footer-logos {
   display: flex;
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
 }
-
 .footer-logos img {
   height: 26px;
   width: auto;
   display: block;
 }
-
 .footer-inner {
   max-width: 1140px;
   margin: 0 auto;
